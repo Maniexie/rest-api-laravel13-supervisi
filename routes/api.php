@@ -1,15 +1,73 @@
 <?php
 
+use App\Http\Controllers\ItemPenilaianController;
+use App\Http\Controllers\JawabanValidatorController;
+use App\Http\Controllers\KategoriPenilaianController;
+use App\Http\Controllers\KodeTindakLanjutHasilSupervisiController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\Request;
 
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
 
 // untuk membuat controller api
 // php artisan make:controller UserController --api
 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::middleware('auth:sanctum')->post('/logout', function (Request $request) {
+    // Menghapus token yang digunakan saat ini
+    $request->user()->currentAccessToken()->delete();
+
+    return response()->json([
+        'message' => 'Successfully logged out'
+    ], 200);
+});
+
 Route::apiResource('users', UserController::class);
-Route::patch('/users/{id}', [UserController::class, 'update']);
+// Route::apiResource('kode-tindak-lanjut', KodeTindakLanjutHasilSupervisiController::class);
+
+// Route::post('/login', [LoginController::class, '__invoke']);
+Route::post('/login', App\Http\Controllers\Auth\LoginController::class)->name('login');
+Route::post('/register', App\Http\Controllers\Auth\RegisterController::class)->name('register');
+
+
+// Kategori Penilaian
+Route::get('/kategori-penilaian', [KategoriPenilaianController::class, 'index']);
+Route::get('/kategori-penilaian/{id}', [KategoriPenilaianController::class, 'show']);
+Route::post('/kategori-penilaian', [KategoriPenilaianController::class, 'store']);
+Route::put('/kategori-penilaian/{id}', [KategoriPenilaianController::class, 'update']);
+Route::delete('/kategori-penilaian/{id}', [KategoriPenilaianController::class, 'destroy']);
+
+// Item Penilaian
+Route::get('/item-penilaian', [ItemPenilaianController::class, 'index']);
+Route::get('/item-penilaian/{id}', [ItemPenilaianController::class, 'show']);
+Route::post('/item-penilaian', [ItemPenilaianController::class, 'store']);
+Route::put('/item-penilaian/{id}', [ItemPenilaianController::class, 'update']);
+Route::delete('/item-penilaian/{id}', [ItemPenilaianController::class, 'destroy']);
+
+// Kode Tindak Lanjut Hasil Supervisi
+Route::get('/kode-tindak-lanjut-hasil-supervisi', [KodeTindakLanjutHasilSupervisiController::class, 'index']);
+Route::get('/kode-tindak-lanjut-hasil-supervisi/{kode}', [KodeTindakLanjutHasilSupervisiController::class, 'show']);
+Route::post('/kode-tindak-lanjut-hasil-supervisi', [KodeTindakLanjutHasilSupervisiController::class, 'store']);
+Route::put('/kode-tindak-lanjut-hasil-supervisi/{kode}', [KodeTindakLanjutHasilSupervisiController::class, 'update']);
+Route::delete('/kode-tindak-lanjut-hasil-supervisi/{kode}', [KodeTindakLanjutHasilSupervisiController::class, 'destroy']);
+
+
+
+Route::post('/jawaban-validator', [JawabanValidatorController::class, 'store']);
+Route::post('/hitung-aiken/{id}', [JawabanValidatorController::class, 'validasiItem']);
+Route::get('/item-valid', [ItemPenilaianController::class, 'itemValid']);
+
+// php artisan make:controller KodeTindakLanjutHasilSupervisiController --api

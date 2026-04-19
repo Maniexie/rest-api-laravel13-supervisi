@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('kode_golongan');
             $table->string('kode_status_pegawai');
             $table->string('nip');
+            $table->string('email')->unique();
             $table->string('nama');
             $table->string('username')->unique();
             $table->string('password', 64);

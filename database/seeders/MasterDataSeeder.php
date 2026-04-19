@@ -61,5 +61,57 @@ class MasterDataSeeder extends Seeder
                 'updated_at' => now(),
             ],
         ]);
+
+        // Seeder k_penilaian
+        DB::table('k_penilaian')->insert([
+            [
+                'kode_kategori_penilaian' => 'A1',
+                'nama_kategori_penilaian' => 'Guru menguasai materi',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'kode_kategori_penilaian' => 'A2',
+                'nama_kategori_penilaian' => 'Guru menggunakan metode yang tepat',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
+
+        DB::table('k_penilaian')->insert([
+            [
+                'kode_kategori_penilaian' => 'KDSL',
+                'nama_kategori_penilaian' => 'Kedisiplinan',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'kode_kategori_penilaian' => 'KQ',
+                'nama_kategori_penilaian' => 'Kualitas Penilaian',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
+
+        DB::table('item_penilaian')->insert([
+            [
+                'kode_kategori_penilaian' => 'KQ',
+                'pernyataan' => 'Guru menguasai materi',
+                'versi' => 1,
+                'nilai_aiken' => 1,
+                'status' => 'valid',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'kode_kategori_penilaian' => 'KDSL',
+                'pernyataan' => 'Guru menggunakan metode yang tepat',
+                'versi' => 1,
+                'nilai_aiken' => 1,
+                'status' => 'valid',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
     }
 }

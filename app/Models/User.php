@@ -7,11 +7,12 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens; // 1. Import trait
 
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -22,11 +23,13 @@ class User extends Authenticatable
     protected $primaryKey = 'id_user';
 
     protected $fillable = [
+        'id_user',
         'kode_jabatan',
         'kode_golongan',
         'kode_status_pegawai',
         'nip',
         'nama',
+        'email',
         'username',
         'password',
         'nomor_hp',
