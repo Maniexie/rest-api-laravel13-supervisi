@@ -7,8 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class ItemPenilaian extends Model
 {
     protected $table = 'item_penilaian';
+
     protected $primaryKey = 'id_item_penilaian';
-    protected $keyType = 'string';
+
+    protected $keyType = 'int';
+
     public $incrementing = true;
 
     protected $fillable = [
