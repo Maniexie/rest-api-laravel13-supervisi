@@ -1,12 +1,14 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
+
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ItemPenilaianController;
 use App\Http\Controllers\JawabanValidatorController;
 use App\Http\Controllers\KategoriPenilaianController;
 use App\Http\Controllers\KodeTindakLanjutHasilSupervisiController;
 use App\Http\Controllers\UserController;
+
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -28,6 +30,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
 Route::middleware('auth:sanctum')->post('/logout', function (Request $request) {
     // Menghapus token yang digunakan saat ini
     $request->user()->currentAccessToken()->delete();
@@ -38,11 +44,14 @@ Route::middleware('auth:sanctum')->post('/logout', function (Request $request) {
 });
 
 Route::apiResource('users', UserController::class);
+
+
 // Route::apiResource('kode-tindak-lanjut', KodeTindakLanjutHasilSupervisiController::class);
 
 // Route::post('/login', [LoginController::class, '__invoke']);
-Route::post('/login', LoginController::class)->name('login');
-Route::post('/register', RegisterController::class)->name('register');
+// Route::middleware('auth:sanctum')->post('/login', [LoginController::class, '__invoken']);
+// Route::post('/login', LoginController::class)->name('login');
+// Route::post('/register', RegisterController::class)->name('register');
 
 // Kategori Penilaian
 Route::get('/kategori-penilaian', [KategoriPenilaianController::class, 'index']);
@@ -67,8 +76,33 @@ Route::post('/kode-tindak-lanjut-hasil-supervisi', [KodeTindakLanjutHasilSupervi
 Route::put('/kode-tindak-lanjut-hasil-supervisi/{kode}', [KodeTindakLanjutHasilSupervisiController::class, 'update']);
 Route::delete('/kode-tindak-lanjut-hasil-supervisi/{kode}', [KodeTindakLanjutHasilSupervisiController::class, 'destroy']);
 
-Route::post('/jawaban-validator', [JawabanValidatorController::class, 'store']);
-Route::post('/hitung-aiken/{id}', [JawabanValidatorController::class, 'validasiItem']);
-Route::get('/item-valid', [ItemPenilaianController::class, 'itemValid']);
+// Jawaban Validator
+// Route::post('/jawaban-validator/submit', [JawabanValidatorController::class, 'postJawabanValidator']);
+// Route::middleware('auth:sanctum')->post(
+//     '/jawaban-validator/submit',
+//     [JawabanValidatorController::class, 'postJawabanValidator']
+// );
+
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/jawaban-validator/submit', [JawabanValidatorController::class, 'postJawabanValidator']);
+});
+
+Route::middleware('auth:sanctum')->get(
+    '/jawaban-validator/status-pengujian',
+    [JawabanValidatorController::class, 'postJawabanValidator']
+);
+// Route::post('/jawaban-validator', [JawabanValidatorController::class, 'store']);
+// Route::post('/hitung-aiken/{id}', [JawabanValidatorController::class, 'validasiItem']);
+// Route::get('/item-valid', [ItemPenilaianController::class, 'itemValid']);
+
+
+// ======= JAWABAN VALIDATOR =======
+// Route::get('/jawaban-validator/status-pengujian', [JawabanValidatorController::class, 'statusPengujian']);
+Route::middleware('auth:sanctum')->get(
+    '/jawaban-validator/status-pengujian',
+    [JawabanValidatorController::class, 'statusPengujian']
+);
 
 // php artisan make:controller KodeTindakLanjutHasilSupervisiController --api

@@ -135,6 +135,24 @@ class ItemPenilaianController extends Controller
         }
     }
 
+    public function getDetailKuesionerByVersi($versi)
+    {
+        try {
+            // $user = User::where('role', 'validator')->first();
+            $data = ItemPenilaian::where('versi', $versi)->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan server',
+            ], 500);
+        }
+    }
+
     //
     // public function store(Request $request)
     // {
