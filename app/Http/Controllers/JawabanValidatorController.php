@@ -8,58 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class JawabanValidatorController extends Controller
 {
-    //
 
-    public function hitungAiken($id_item)
-    {
-        $jawaban = DB::table('jawaban_validator')
-            ->where('id_item_penilaian', $id_item)
-            ->pluck('jawaban');
 
-        $n = $jawaban->count();
-
-        if ($n == 0) {
-            return null;
-        }
-
-        $lo = 1;
-        $c = 5;
-
-        $totalS = 0;
-
-        foreach ($jawaban as $r) {
-            $totalS += ($r - $lo);
-        }
-
-        $v = $totalS / ($n * ($c - 1));
-
-        return round($v, 3);
-    }
-
-    public function validasiItem($id_item)
-    {
-        $v = $this->hitungAiken($id_item);
-
-        if ($v === null) {
-            return response()->json(['message' => 'Belum ada data']);
-        }
-
-        // Threshold (bisa kamu sesuaikan di skripsi)
-        $status = $v >= 0.8 ? 'valid' : 'tidak_valid';
-
-        DB::table('item_penilaian')
-            ->where('id_item_penilaian', $id_item)
-            ->update([
-                'nilai_aiken' => $v,
-                'status_validasi' => $status,
-            ]);
-
-        return response()->json([
-            'nilai_aiken' => $v,
-            'status' => $status,
-        ]);
-    }
-
+// ====== MENYIMPAN JAWABAN VALIDATOR MELALUI KUESIONER ======
     public function postJawabanValidator(Request $request)
     {
      $request->validate([
@@ -74,7 +25,7 @@ class JawabanValidatorController extends Controller
     try {
         $idValidator = Auth::id(); // 🔥 dari login
 
-                $exists = DB::table('jawaban_validator')
+            $exists = DB::table('jawaban_validator')
             ->where('versi', $request->versi)
             ->where('id_validator', $idValidator)
             ->exists();
@@ -102,6 +53,8 @@ class JawabanValidatorController extends Controller
 
         DB::table('jawaban_validator')->insert($dataInsert);
 
+        // setelah insert
+        $this->cekDanHitung($request->versi);
         DB::commit();
 
 
@@ -121,6 +74,10 @@ class JawabanValidatorController extends Controller
     }
 
 
+    /// =================================================================================================
+
+
+    //  ======= STATUS PENGUJIAN UNTUK VALIDASI KUESIONER ========
     public function statusPengujian()
     {
         $idValidator = Auth::id(); // 🔥 dari login
@@ -143,4 +100,66 @@ class JawabanValidatorController extends Controller
             ], 200);
         }
     }
+// =================================================================================================
+
+    //  ======= MENGUBAH DATA ITEM PENILAIAN ========
+      public function cekDanHitung($versi)
+{
+    $minimalValidator = 2; // 🔥 bisa kamu ubah sesuai skripsi
+
+    $jumlahValidator = DB::table('jawaban_validator')
+        ->where('versi', $versi)
+        ->distinct('id_validator')
+        ->count('id_validator');
+
+    if ($jumlahValidator >= $minimalValidator) {
+        $this->hitungAikenPerVersi($versi);
+    }
+}
+
+    public function hitungAikenPerVersi($versi)
+{
+    $items = DB::table('item_penilaian')
+        ->where('versi', $versi)
+        ->get();
+
+    $lo = 1;
+    $c = 7; // 🔥 sesuai skala kamu (1–7)
+
+    foreach ($items as $item) {
+
+        $jawaban = DB::table('jawaban_validator')
+            ->where('id_item_penilaian', $item->id_item_penilaian)
+            ->pluck('jawaban');
+
+        $n = $jawaban->count();
+
+        if ($n == 0) continue;
+
+        $totalS = 0;
+
+        foreach ($jawaban as $r) {
+            $totalS += ($r - $lo);
+        }
+
+        $v = $totalS / ($n * ($c - 1));
+
+        $status = $v >= 0.8 ? 'valid' : 'tidak_valid';
+
+        DB::table('item_penilaian')
+            ->where('id_item_penilaian', $item->id_item_penilaian)
+            ->update([
+                'nilai_aiken' => round($v,3),
+                'status' => $status,
+            ]);
+    }
+
+    return true;
+}
+
+
+ //  ===========================================================================
+
+
+
 }
