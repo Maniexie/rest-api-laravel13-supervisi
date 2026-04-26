@@ -23,7 +23,9 @@ return new class extends Migration
             $table->string('password', 64);
             $table->string('nomor_hp');
             $table->text('alamat');
-            $table->enum('role', ['operator', 'validator', 'kepala_sekolah', 'guru']);
+            $table->enum('jenis_kelamin', ['laki-laki', 'perempuan']);
+            $table->boolean('isValidator')->default(false);
+            $table->enum('role', ['kepala_sekolah', 'guru','operator']);
             $table->rememberToken();
             $table->timestamps();
 

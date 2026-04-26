@@ -28,11 +28,24 @@ class AuthController extends Controller
 
         $token = $user->createToken('token-api')->plainTextToken;
 
-        return response()->json([
-            'success' => true,
-            'token' => $token,
-            'user' => $user
-        ]);
+        // if (!$user->isValidator) {
+        // return response()->json([
+        // 'success' => false,
+        // 'message' => 'Anda bukan validator'
+        //     ], 403);
+        // }
+
+       return response()->json([
+        'success' => true,
+        'message' => 'Login berhasil',
+        'token' => $token,
+        'user' => [
+            'id' => $user->id,
+            'username' => $user->username,
+            'role' => $user->role, // 🔥 penting
+            'isValidator' => (bool) $user->isValidator
+        ]
+        ], 200);
     }
 
     public function logout(Request $request)
