@@ -153,6 +153,56 @@ class ItemPenilaianController extends Controller
         }
     }
 
+public function toggleDigunakan($id)
+{
+    $item = DB::table('item_penilaian')
+        ->where('id_item_penilaian', $id)
+        ->first();
+
+    if (!$item) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Item tidak ditemukan'
+        ], 404);
+    }
+
+    // 🔥 HANYA ITEM VALID YANG BOLEH DIGUNAKAN
+    if ($item->status !== 'valid') {
+        return response()->json([
+            'success' => false,
+            'message' => 'Item belum valid'
+        ], 400);
+    }
+
+    $newValue = !$item->isDigunakan;
+
+    DB::table('item_penilaian')
+        ->where('id_item_penilaian', $id)
+        ->update([
+            'isDigunakan' => $newValue
+        ]);
+
+    return response()->json([
+        'success' => true,
+        'isDigunakan' => $newValue,
+        'message' => $newValue ? 'Item digunakan' : 'Item tidak digunakan'
+    ]);
+}
+
+
+public function getItemDigunakan()
+{
+    $query = DB::table('item_penilaian')
+        ->where('status', 'valid')
+        ->where('isDigunakan', true);
+
+    return response()->json([
+        'success' => true,
+        'total' => $query->count(), // ✅ aman
+        'data' => $query->get()     // ✅ ambil data
+    ]);
+}
+
     //
     // public function store(Request $request)
     // {

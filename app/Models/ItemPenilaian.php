@@ -21,6 +21,7 @@ class ItemPenilaian extends Model
         'versi',
         'nilai_aiken',
         'status',
+        'isDigunakan'
     ];
 
     public function k_penilaian()

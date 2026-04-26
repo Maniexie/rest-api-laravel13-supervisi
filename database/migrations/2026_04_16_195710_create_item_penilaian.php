@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer("versi");
             $table->float("nilai_aiken");
             $table->enum("status", ["valid", "tidak_valid"])->default("tidak_valid");
+            $table->boolean("isDigunakan")->default(false);
             $table->foreign("kode_kategori_penilaian")->references("kode_kategori_penilaian")->on("k_penilaian")->onDelete("cascade");
             $table->timestamps();
         });

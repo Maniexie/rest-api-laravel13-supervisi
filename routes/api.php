@@ -69,6 +69,17 @@ Route::delete('/item-penilaian/{id}', [ItemPenilaianController::class, 'destroy'
 Route::get('/item-penilaian/get-versi-item', [ItemPenilaianController::class, 'getVersiItem']);
 Route::get('/item-penilaian/group-by-versi', [ItemPenilaianController::class, 'groupByVersi']);
 
+Route::post('/item-penilaian/toggle/{id}', [ItemPenilaianController::class, 'toggleDigunakan']);
+Route::get('/item-penilaian/digunakan', [ItemPenilaianController::class, 'getItemDigunakan']);
+
+// Route::post(
+//     '/item-penilaian/toggle/{id}',
+//     [ItemPenilaianController::class, 'getItemDigunakan']
+// );
+
+// Route::get('/item-penilaian/digunakan', [ItemPenilaianController::class, 'getItemDigunakan']);
+
+
 // Kode Tindak Lanjut Hasil Supervisi
 Route::get('/kode-tindak-lanjut-hasil-supervisi', [KodeTindakLanjutHasilSupervisiController::class, 'index']);
 Route::get('/kode-tindak-lanjut-hasil-supervisi/{kode}', [KodeTindakLanjutHasilSupervisiController::class, 'show']);
@@ -104,5 +115,8 @@ Route::middleware('auth:sanctum')->get(
     '/jawaban-validator/status-pengujian',
     [JawabanValidatorController::class, 'statusPengujian']
 );
+
+
+
 
 // php artisan make:controller KodeTindakLanjutHasilSupervisiController --api
