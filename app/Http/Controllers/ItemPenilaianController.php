@@ -216,35 +216,5 @@ public function getItemDigunakan()
     //     return response()->json(['message' => 'Berhasil disimpan']);
     // }
 
-    public function storeBulk(Request $request)
-    {
-        try {
 
-            $data = [];
-
-            foreach ($request->jawaban as $item) {
-                $data[] = [
-                    'id_item_penilaian' => $item['id_item'],
-                    'id_validator' => $request->id_validator,
-                    'jawaban' => $item['nilai'],
-                    'versi' => 1,
-                ];
-            }
-
-            DB::table('jawaban_validator')->insert($data);
-
-            return response()->json([
-                'message' => 'Semua jawaban berhasil disimpan',
-                'data' => $data,
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Terjadi kesalahan server',
-            ], 500);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => 'Item Penilaian tidak ditemukan',
-            ], 404);
-        }
-    }
 }

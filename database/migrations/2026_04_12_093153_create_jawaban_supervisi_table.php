@@ -12,8 +12,25 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jawaban_supervisi', function (Blueprint $table) {
-            $table->id();
+             $table->id('id_jawaban_supervisi');
+            //  $table->integer("id_jadwal_supervisi");
+             $table->integer("id_item_penilaian");
+             $table->integer("id_kepala_sekolah");
+             $table->integer("id_guru");
+             $table->string("jawaban");
+             $table->date('tanggal_pengisian');
             $table->timestamps();
+
+            // RELASI
+            $table->foreignId('id_jadwal_supervisi')
+                ->references('id_jadwal_supervisi')
+                ->on('jadwal_supervisi')
+                ->onDelete('cascade');
+
+
+
+
+
         });
     }
 

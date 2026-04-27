@@ -4,6 +4,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ItemPenilaianController;
+use App\Http\Controllers\JadwalSupervisiController;
+use App\Http\Controllers\JawabanSupervisiController;
 use App\Http\Controllers\JawabanValidatorController;
 use App\Http\Controllers\KategoriPenilaianController;
 use App\Http\Controllers\KodeTindakLanjutHasilSupervisiController;
@@ -72,6 +74,25 @@ Route::get('/item-penilaian/group-by-versi', [ItemPenilaianController::class, 'g
 Route::post('/item-penilaian/toggle/{id}', [ItemPenilaianController::class, 'toggleDigunakan']);
 Route::get('/item-penilaian/digunakan', [ItemPenilaianController::class, 'getItemDigunakan']);
 
+
+// SUPERVISI
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/supervisi/simpan-jawaban', [JawabanSupervisiController::class, 'simpanJawabanSupervisi']);
+});
+// Route::post('/supervisi/simpan-jawaban', [JawabanSupervisiController::class, 'simpanJawabanSupervisi']);
+// Route::get('/supervisi/get-list-guru', [JawabanSupervisiController::class, 'getGuruByJadwalSupervisi']);
+
+Route::get('/supervisi/get-list-guru/{id_jadwal}',
+    [JawabanSupervisiController::class, 'getGuruByJadwalSupervisi']
+);
+
+
+// jadwal supervisi
+Route::post('/supervisi/tambah-jadwal-supervisi', [JadwalSupervisiController::class, 'tambahJadwalSupervisi'])->middleware('auth:sanctum');
+Route::get('/supervisi/get-list-jadwal-supervisi', [JadwalSupervisiController::class, 'getJadwalSupervisi'])->middleware('auth:sanctum');
+Route::get('/supervisi/get-list-jadwal-supervisi/{id}', [JadwalSupervisiController::class, 'getJadwalSupervisiById'])->middleware('auth:sanctum');
+Route::delete('/supervisi/hapus-jadwal-supervisi/{id}', [JadwalSupervisiController::class, 'hapusJadwalSupervisi'])->middleware('auth:sanctum');
+Route::put('/supervisi/ubah-jadwal-supervisi/{id}', [JadwalSupervisiController::class, 'ubahJadwalSupervisi'])->middleware('auth:sanctum');
 // Route::post(
 //     '/item-penilaian/toggle/{id}',
 //     [ItemPenilaianController::class, 'getItemDigunakan']

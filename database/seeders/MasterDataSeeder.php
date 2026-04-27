@@ -115,5 +115,15 @@ class MasterDataSeeder extends Seeder
                 'updated_at' => now(),
             ],
         ]);
+
+        DB::table('jadwal_supervisi')->insert([
+           'id_kepala_sekolah' => 1,
+           'nama_periode' => 'Periode 1',
+           'tanggal_mulai' => now(),
+           'tanggal_selesai' => date('Y-m-d', strtotime('+1 month')),
+           'deskripsi' => 'Jadwal Supervisi Periode 1',
+           'created_at' => now(),
+           'updated_at' => now(),
+        ]);
     }
 }

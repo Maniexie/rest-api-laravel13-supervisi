@@ -12,8 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jadwal_supervisi', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        $table->id("id_jadwal_supervisi");
+        $table->integer("id_kepala_sekolah");
+        $table->string("nama_periode");
+        $table->date("tanggal_mulai");
+        $table->date("tanggal_selesai");
+        $table->string("deskripsi");
+        $table->timestamps();
         });
     }
 

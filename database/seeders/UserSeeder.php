@@ -55,7 +55,7 @@ class UserSeeder extends Seeder
                 'kode_status_pegawai' => 'PNS',
                 'nip' => '19800203',
                 'email' => fake('id_ID')->email(),
-                'nama' => fake('id_ID')->name(),
+                'nama' => 'Guru TESTER',
                 'username' => 'guru',
                 'password' => Hash::make('password123'),
                 'nomor_hp' => '082345678901',
