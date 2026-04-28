@@ -42,17 +42,27 @@ public function getJadwalSupervisi()
 
 public function editJadwalSupervisi(Request $request, $id)
 {
-    $jadwal = JadwalSupervisi::findOrFail($id);
+    try {
+        $jadwal = JadwalSupervisi::findOrFail($id);
 
-    $jadwal->update([
-        'nama_periode' => $request->nama_periode,
-        'deskripsi' => $request->deskripsi,
-    ]);
+        $jadwal->update([
+            'nama_periode' => $request->nama_periode,
+            'deskripsi' => $request->deskripsi,
+            'tanggal_mulai' => $request->tanggal_mulai,
+            'tanggal_selesai' => $request->tanggal_selesai,
+        ]);
 
-    return response()->json([
-        'success' => true,
-        'data' => $jadwal
-    ]);
+        return response()->json([
+            'success' => true,
+            'data' => $jadwal
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 500);
+    }
 }
 
 public function getDetailJadwalSupervisi($id)
@@ -62,6 +72,18 @@ public function getDetailJadwalSupervisi($id)
     return response()->json([
         'success' => true,
         'data' => $data
+    ]);
+}
+
+public function deleteJadwalSupervisi($id)
+{
+    $jadwal = JadwalSupervisi::findOrFail($id);
+
+    $jadwal->delete();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Jadwal berhasil dihapus'
     ]);
 }
 }

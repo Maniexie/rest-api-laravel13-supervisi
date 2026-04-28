@@ -94,9 +94,13 @@ Route::get('/supervisi/get-list-jadwal-supervisi/{id}', [JadwalSupervisiControll
 Route::delete('/supervisi/hapus-jadwal-supervisi/{id}', [JadwalSupervisiController::class, 'hapusJadwalSupervisi'])->middleware('auth:sanctum');
 Route::put('/supervisi/ubah-jadwal-supervisi/{id}', [JadwalSupervisiController::class, 'ubahJadwalSupervisi'])->middleware('auth:sanctum');
 
-Route::put('/supervisi/edit-jadwal-supervisi/{id}', [JadwalSupervisiController::class, 'editJadwalSupervisi'])->middleware('auth:sanctum');
+Route::post('/supervisi/edit-jadwal-supervisi/{id}', [JadwalSupervisiController::class, 'editJadwalSupervisi']);
 Route::get('/supervisi/detail-jadwal-supervisi/{id}', [JadwalSupervisiController::class, 'getDetailJadwalSupervisi'])->middleware('auth:sanctum');
+Route::delete('/supervisi/delete-jadwal-supervisi/{id}',
+    [JadwalSupervisiController::class, 'deleteJadwalSupervisi']
+)->middleware('auth:sanctum');
 // Route::post(
+
 //     '/item-penilaian/toggle/{id}',
 //     [ItemPenilaianController::class, 'getItemDigunakan']
 // );
