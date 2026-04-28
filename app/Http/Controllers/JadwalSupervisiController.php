@@ -32,7 +32,36 @@ class JadwalSupervisiController extends Controller
 
 public function getJadwalSupervisi()
 {
-   return response()->json(JadwalSupervisi::all());
+    $data = JadwalSupervisi::orderBy('tanggal_mulai', 'desc')->get();
+
+    return response()->json([
+        'success' => true,
+        'data' => $data
+    ]);
 }
 
+public function editJadwalSupervisi(Request $request, $id)
+{
+    $jadwal = JadwalSupervisi::findOrFail($id);
+
+    $jadwal->update([
+        'nama_periode' => $request->nama_periode,
+        'deskripsi' => $request->deskripsi,
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'data' => $jadwal
+    ]);
+}
+
+public function getDetailJadwalSupervisi($id)
+{
+    $data = JadwalSupervisi::find($id);
+
+    return response()->json([
+        'success' => true,
+        'data' => $data
+    ]);
+}
 }
