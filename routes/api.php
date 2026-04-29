@@ -47,6 +47,10 @@ Route::middleware('auth:sanctum')->post('/logout', function (Request $request) {
 
 Route::apiResource('users', UserController::class);
 
+// ROUTE GURU
+Route::get('/guru', function () {
+    return \App\Models\User::where('role', 'guru')->get();
+});
 
 // Route::apiResource('kode-tindak-lanjut', KodeTindakLanjutHasilSupervisiController::class);
 

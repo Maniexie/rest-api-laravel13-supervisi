@@ -34,8 +34,10 @@ class User extends Authenticatable
         'password',
         'nomor_hp',
         'alamat',
-        'role'
-    ];
+        'role',
+        'isValidator',
+        'jenis_kelamin',
+        ];
 
     /**
      * The attributes that should be hidden for serialization.
