@@ -25,7 +25,10 @@ class KategoriPenilaianController extends Controller
     public function store(Request $request)
     {
         try {
-            $data = request()->all();
+            $data = [
+                'kode_kategori_penilaian' => $request->kode_kategori_penilaian,
+                'nama_kategori_penilaian' => $request->nama_kategori_penilaian,
+            ];
             $user = KategoriPenilaian::create($data);
 
             return response()->json([

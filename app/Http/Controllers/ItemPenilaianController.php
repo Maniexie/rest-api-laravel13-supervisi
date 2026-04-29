@@ -40,7 +40,7 @@ class ItemPenilaianController extends Controller
             $data = ItemPenilaian::create([
                 'kode_kategori_penilaian' => $request->kode_kategori_penilaian,
                 'pernyataan' => $request->pernyataan,
-                'versi' => 1,
+                'versi' => $request->versi,
                 'nilai_aiken' => 0,
                 'status' => 'tidak_valid',
             ]);
@@ -64,6 +64,7 @@ class ItemPenilaianController extends Controller
             $item->update([
                 'kode_kategori_penilaian' => $request->kode_kategori_penilaian,
                 'pernyataan' => $request->pernyataan,
+                'versi' => $request->versi,
             ]);
 
             return response()->json([
@@ -202,19 +203,5 @@ public function getItemDigunakan()
         'data' => $query->get()     // ✅ ambil data
     ]);
 }
-
-    //
-    // public function store(Request $request)
-    // {
-    //     DB::table('jawaban_validator')->insert([
-    //         'id_item_penilaian' => $request->id_item,
-    //         'id_validator' => $request->id_validator,
-    //         'jawaban' => $request->jawaban,
-    //         'versi' => 1
-    //     ]);
-
-    //     return response()->json(['message' => 'Berhasil disimpan']);
-    // }
-
 
 }
