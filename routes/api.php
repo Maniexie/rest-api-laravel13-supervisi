@@ -107,6 +107,10 @@ Route::delete('/supervisi/delete-jadwal-supervisi/{id}',
 // HASIL SUPERVISI
 Route::get('/supervisi/hasil-supervisi/{id}', [JawabanSupervisiController::class, 'listHasilSupervisiByGuru']);
 Route::get('/supervisi/hasil-supervisi/{id_jadwal}/{id_guru}', [JawabanSupervisiController::class, 'detailHasilSupervisiGurubyJadwal']);
+Route::get('/supervisi/statistik-guru/{id}', [JawabanSupervisiController::class, 'statistikSupervisiGuru']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/supervisi/simpan-hasil-supervisi', [JawabanSupervisiController::class, 'simpanHasilSupervisi']);
+});
 
 // Kode Tindak Lanjut Hasil Supervisi
 Route::get('/kode-tindak-lanjut-hasil-supervisi', [KodeTindakLanjutHasilSupervisiController::class, 'index']);

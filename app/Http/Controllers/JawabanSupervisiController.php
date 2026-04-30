@@ -19,28 +19,13 @@ public function simpanJawabanSupervisi(Request $request)
 
     $user = auth()->user();
 
-    if (!$user) {
-        return response()->json([
-            'message' => 'Unauthorized'
-        ], 401);
-    }
-
-    // 🔥 CEK DUPLIKAT
-    $cek = DB::table('jawaban_supervisi')
-        ->where('id_guru', $request->id_guru)
-        ->where('id_jadwal_supervisi', $request->id_jadwal_supervisi)
-        ->exists();
-
-    if ($cek) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Guru sudah disupervisi'
-        ], 400);
-    }
-
+    // 🔥 SIMPAN JAWABAN
     $data = [];
+    $totalNilai = 0;
 
     foreach ($request->jawaban as $item) {
+        $totalNilai += $item['nilai'];
+
         $data[] = [
             'id_jadwal_supervisi' => $request->id_jadwal_supervisi,
             'id_item_penilaian' => $item['id_item'],
@@ -53,17 +38,21 @@ public function simpanJawabanSupervisi(Request $request)
         ];
     }
 
-    try {
-        DB::table('jawaban_supervisi')->insert($data);
-    } catch (\Exception $e) {
-        return response()->json([
-            'error' => $e->getMessage()
-        ], 500);
+    DB::table('jawaban_supervisi')->insert($data);
+
+    // 🔥 LOGIKA TINDAK LANJUT OTOMATIS (optional)
+    if ($totalNilai <= 50) {
+        $tindakLanjut = "Pembinaan Intensif";
+    } elseif ($totalNilai <= 75) {
+        $tindakLanjut = "Pembinaan Ringan";
+    } else {
+        $tindakLanjut = "Dipertahankan";
     }
 
     return response()->json([
         'success' => true,
-        'message' => 'Berhasil disimpan'
+        'total_nilai' => $totalNilai,
+        'tindak_lanjut' => $tindakLanjut
     ]);
 }
 
@@ -148,4 +137,64 @@ public function detailHasilSupervisiGurubyJadwal($id_jadwal, $id_guru)
         'data' => $data
     ]);
 }
+
+public function statistikSupervisiGuru($id_guru)
+{
+    $data = DB::table('jawaban_supervisi')
+        ->join('jadwal_supervisi', 'jadwal_supervisi.id_jadwal_supervisi', '=', 'jawaban_supervisi.id_jadwal_supervisi')
+        ->where('jawaban_supervisi.id_guru', $id_guru)
+
+        ->select(
+            'jadwal_supervisi.nama_periode',
+            DB::raw('SUM(jawaban_supervisi.jawaban) as total_nilai')
+        )
+
+        ->groupBy('jadwal_supervisi.nama_periode')
+        ->orderBy('jadwal_supervisi.tanggal_mulai', 'asc')
+        ->get();
+
+    return response()->json([
+        'success' => true,
+        'data' => $data
+    ]);
+}
+
+
+
+
+public function simpanHasilSupervisi(Request $request)
+{
+    $request->validate([
+        'id_jadwal_supervisi' => 'required',
+        'id_guru' => 'required',
+        'nilai' => 'required',
+        'kode_tindak_lanjut' => 'required',
+    ]);
+
+    $user = auth()->user();
+
+    if (!$user) {
+    return response()->json([
+        'message' => 'Unauthorized'
+            ], 401);
+        }
+
+   $data =  DB::table('hasil_supervisi')->insert([
+        'id_jadwal_supervisi' => $request->id_jadwal_supervisi,
+        'id_guru' => $request->id_guru,
+        'id_kepala_sekolah' => $user->id_user,
+        'nilai' => $request->nilai,
+        'kode_tindak_lanjut' => $request->kode_tindak_lanjut,
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'data' => $data
+
+    ]);
+}
+
+
 }

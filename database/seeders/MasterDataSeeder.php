@@ -93,6 +93,7 @@ class MasterDataSeeder extends Seeder
             ],
         ]);
 
+        $this->call(ItemPenilaianSeeder::class);
         DB::table('item_penilaian')->insert([
             [
                 'kode_kategori_penilaian' => 'KQ',
@@ -124,6 +125,21 @@ class MasterDataSeeder extends Seeder
            'deskripsi' => 'Jadwal Supervisi Periode 1',
            'created_at' => now(),
            'updated_at' => now(),
+        ]);
+
+        DB::table('k_tindak_lanjut_hasil_supervisi')->insert([
+            [
+                'kode_tindak_lanjut' => 'TL1',
+                'nama_tindak_lanjut' => 'Tindak Lanjut 1',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'kode_tindak_lanjut' => 'TL2',
+                'nama_tindak_lanjut' => 'Tindak Lanjut 2',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
         ]);
     }
 }

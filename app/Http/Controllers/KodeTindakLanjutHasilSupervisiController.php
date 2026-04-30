@@ -13,7 +13,10 @@ class KodeTindakLanjutHasilSupervisiController extends Controller
     public function index()
     {
         try {
-            return response()->json(KodeTindakLanjutHasilSupervisi::all());
+             return response()->json([
+        'success' => true,
+        'data' => KodeTindakLanjutHasilSupervisi::all()
+    ]);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Terjadi kesalahan server'

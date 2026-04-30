@@ -12,8 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('hasil_supervisi', function (Blueprint $table) {
-            $table->id();
+            $table->id("id_hasil_supervisi");
+            $table->integer('id_jadwal_supervisi');
             $table->string('kode_tindak_lanjut');
+            $table->integer('id_kepala_sekolah');
+            $table->integer('id_guru');
+            $table->integer('nilai');
+            $table->text('umpan_balik')->nullable();
             $table->timestamps();
 
             // RELASI
