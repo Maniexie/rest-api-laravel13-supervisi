@@ -93,4 +93,59 @@ public function simpanJawabanSupervisi(Request $request)
         'data' => $data
     ]);
 }
+
+
+public function listHasilSupervisiByGuru($id_guru)
+{
+    $data = DB::table('jawaban_supervisi')
+        ->join(
+            'jadwal_supervisi',
+            'jadwal_supervisi.id_jadwal_supervisi',
+            '=',
+            'jawaban_supervisi.id_jadwal_supervisi'
+        )
+        ->where('jawaban_supervisi.id_guru', $id_guru)
+
+        ->select(
+            'jadwal_supervisi.id_jadwal_supervisi',
+            'jadwal_supervisi.nama_periode',
+            'jadwal_supervisi.tanggal_mulai',
+            'jadwal_supervisi.tanggal_selesai',
+            'jadwal_supervisi.id_kepala_sekolah',
+            DB::raw('SUM(jawaban_supervisi.jawaban) as total_nilai')
+        )
+
+        ->groupBy(
+            'jadwal_supervisi.id_jadwal_supervisi',
+            'jadwal_supervisi.nama_periode',
+            'jadwal_supervisi.tanggal_mulai',
+            'jadwal_supervisi.tanggal_selesai',
+            'jadwal_supervisi.id_kepala_sekolah'
+        )
+
+        ->orderBy('jadwal_supervisi.tanggal_mulai', 'desc')
+        ->get();
+
+    return response()->json([
+        'success' => true,
+        'data' => $data
+    ]);
+}
+
+
+public function detailHasilSupervisiGurubyJadwal($id_jadwal, $id_guru)
+{
+    $data = DB::table('jawaban_supervisi')
+        ->where('id_jadwal_supervisi', $id_jadwal)
+        ->where('id_guru', $id_guru)
+        ->select(
+            'id_item_penilaian',
+            'jawaban'
+        )
+        ->get();
+
+    return response()->json([
+        'data' => $data
+    ]);
+}
 }

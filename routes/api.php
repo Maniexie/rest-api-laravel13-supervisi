@@ -103,14 +103,10 @@ Route::get('/supervisi/detail-jadwal-supervisi/{id}', [JadwalSupervisiController
 Route::delete('/supervisi/delete-jadwal-supervisi/{id}',
     [JadwalSupervisiController::class, 'deleteJadwalSupervisi']
 )->middleware('auth:sanctum');
-// Route::post(
 
-//     '/item-penilaian/toggle/{id}',
-//     [ItemPenilaianController::class, 'getItemDigunakan']
-// );
-
-// Route::get('/item-penilaian/digunakan', [ItemPenilaianController::class, 'getItemDigunakan']);
-
+// HASIL SUPERVISI
+Route::get('/supervisi/hasil-supervisi/{id}', [JawabanSupervisiController::class, 'listHasilSupervisiByGuru']);
+Route::get('/supervisi/hasil-supervisi/{id_jadwal}/{id_guru}', [JawabanSupervisiController::class, 'detailHasilSupervisiGurubyJadwal']);
 
 // Kode Tindak Lanjut Hasil Supervisi
 Route::get('/kode-tindak-lanjut-hasil-supervisi', [KodeTindakLanjutHasilSupervisiController::class, 'index']);
