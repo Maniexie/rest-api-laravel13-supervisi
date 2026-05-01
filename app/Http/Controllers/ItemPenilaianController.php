@@ -191,17 +191,32 @@ public function toggleDigunakan($id)
 }
 
 
+// public function getItemDigunakan()
+// {
+//     $query = DB::table('item_penilaian')
+//         ->where('status', 'valid')
+//         ->where('isDigunakan', true);
+
+//     return response()->json([
+//         'success' => true,
+//         'total' => $query->count(), // ✅ aman
+//         'data' => $query->get()     // ✅ ambil data
+//     ]);
+// }
+
 public function getItemDigunakan()
 {
-    $query = DB::table('item_penilaian')
-        ->where('status', 'valid')
-        ->where('isDigunakan', true);
+    $data = DB::table('item_penilaian')
+        ->join('k_penilaian', 'item_penilaian.kode_kategori_penilaian', '=', 'k_penilaian.kode_kategori_penilaian')
+        ->select(
+            'item_penilaian.*',
+            'k_penilaian.nama_kategori_penilaian'
+        )
+        ->where('item_penilaian.isDigunakan', 1)
+        ->get();
 
     return response()->json([
-        'success' => true,
-        'total' => $query->count(), // ✅ aman
-        'data' => $query->get()     // ✅ ambil data
+        'data' => $data
     ]);
 }
-
 }

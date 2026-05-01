@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('kode_tindak_lanjut');
             $table->integer('id_kepala_sekolah');
             $table->integer('id_guru');
-            $table->integer('nilai');
+            $table->float('nilai');
             $table->text('umpan_balik')->nullable();
             $table->timestamps();
 

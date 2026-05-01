@@ -19,13 +19,30 @@ public function simpanJawabanSupervisi(Request $request)
 
     $user = auth()->user();
 
-    // 🔥 SIMPAN JAWABAN
     $data = [];
-    $totalNilai = 0;
+    $kategoriNilai = []; // 🔥 simpan per kategori
 
     foreach ($request->jawaban as $item) {
-        $totalNilai += $item['nilai'];
 
+        // 🔥 ambil kategori item
+        $itemDb = DB::table('item_penilaian')
+            ->where('id_item_penilaian', $item['id_item'])
+            ->first();
+
+        $kategori = $itemDb->kode_kategori_penilaian;
+
+        // 🔥 grouping nilai
+        if (!isset($kategoriNilai[$kategori])) {
+            $kategoriNilai[$kategori] = [
+                'total' => 0,
+                'count' => 0
+            ];
+        }
+
+        $kategoriNilai[$kategori]['total'] += $item['nilai'];
+        $kategoriNilai[$kategori]['count']++;
+
+        // simpan jawaban
         $data[] = [
             'id_jadwal_supervisi' => $request->id_jadwal_supervisi,
             'id_item_penilaian' => $item['id_item'],
@@ -40,10 +57,20 @@ public function simpanJawabanSupervisi(Request $request)
 
     DB::table('jawaban_supervisi')->insert($data);
 
-    // 🔥 LOGIKA TINDAK LANJUT OTOMATIS (optional)
-    if ($totalNilai <= 50) {
+    // 🔥 HITUNG RATA-RATA PER KATEGORI
+    $rataKategori = [];
+
+    foreach ($kategoriNilai as $kategori => $val) {
+        $rataKategori[$kategori] = $val['total'] / $val['count'];
+    }
+
+    // 🔥 HITUNG NILAI AKHIR
+    $nilaiAkhir = array_sum($rataKategori) / count($rataKategori);
+
+    // 🔥 TINDAK LANJUT (pakai skala 1–5)
+    if ($nilaiAkhir < 2.5) {
         $tindakLanjut = "Pembinaan Intensif";
-    } elseif ($totalNilai <= 75) {
+    } elseif ($nilaiAkhir < 3.5) {
         $tindakLanjut = "Pembinaan Ringan";
     } else {
         $tindakLanjut = "Dipertahankan";
@@ -51,7 +78,8 @@ public function simpanJawabanSupervisi(Request $request)
 
     return response()->json([
         'success' => true,
-        'total_nilai' => $totalNilai,
+        'nilai_per_kategori' => $rataKategori,
+        'nilai_akhir' => round($nilaiAkhir, 2)*20,
         'tindak_lanjut' => $tindakLanjut
     ]);
 }
