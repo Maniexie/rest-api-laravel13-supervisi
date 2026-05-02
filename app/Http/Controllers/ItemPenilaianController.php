@@ -107,6 +107,38 @@ class ItemPenilaianController extends Controller
             ], 500);
         }
     }
+public function getVersiItemNoValid()
+{
+    try {
+        $data = ItemPenilaian::select('versi')
+            ->groupBy('versi')
+            ->havingRaw("SUM(CASE WHEN status = 'tidak_valid' THEN 1 ELSE 0 END) > 0")
+            ->orderBy('versi', 'asc')
+            ->pluck('versi');
+
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage(),
+        ], 500);
+    }
+}
+
+
+public function getItemByVersiTidakValid($versi)
+{
+    $data = ItemPenilaian::where('versi', $versi)
+        ->where('status', 'tidak_valid')
+        ->get();
+
+    return response()->json([
+        'data' => $data
+    ]);
+}
 
     public function groupByVersi()
     {
@@ -218,5 +250,50 @@ public function getItemDigunakan()
     return response()->json([
         'data' => $data
     ]);
+}
+
+
+
+// ITEM TIDAK VALID
+public function getItemTidakValidGroupByVersi()
+{
+    try {
+        $items = ItemPenilaian::where('status', 'tidak_valid')
+            ->orderBy('versi', 'asc')
+            ->get();
+
+        // 🔥 GROUPING MANUAL
+        $grouped = $items->groupBy('versi')->map(function ($group, $versi) {
+            return [
+                'versi' => $versi,
+                'total_item' => $group->count(),
+                'items' => $group->values(),
+            ];
+        })->values();
+
+        return response()->json([
+            'success' => true,
+            'data' => $grouped,
+            'items' => $items
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage(),
+        ], 500);
+    }
+}
+
+
+
+
+public function getInvalidItems() {
+    // Mengambil data yang statusnya 'tidak_valid'
+    $data = ItemPenilaian::where('status', 'tidak_valid')->get();
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $data
+    ], 200);
 }
 }

@@ -70,17 +70,17 @@ Route::post('/kategori-penilaian', [KategoriPenilaianController::class, 'store']
 Route::put('/kategori-penilaian/{id}', [KategoriPenilaianController::class, 'update']);
 Route::delete('/kategori-penilaian/{id}', [KategoriPenilaianController::class, 'destroy']);
 
+
+
 // Item Penilaian
+Route::get('/item-penilaian/get-versi-item', [ItemPenilaianController::class, 'getVersiItem']);
 Route::get('/item-penilaian', [ItemPenilaianController::class, 'index']);
-Route::get('/item-penilaian/{id}', [ItemPenilaianController::class, 'show']);
 Route::post('/item-penilaian', [ItemPenilaianController::class, 'store']);
 Route::put('/item-penilaian/{id}', [ItemPenilaianController::class, 'update']);
 Route::delete('/item-penilaian/{id}', [ItemPenilaianController::class, 'destroy']);
-Route::get('/item-penilaian/get-versi-item', [ItemPenilaianController::class, 'getVersiItem']);
 Route::get('/item-penilaian/group-by-versi', [ItemPenilaianController::class, 'groupByVersi']);
-
-Route::post('/item-penilaian/toggle/{id}', [ItemPenilaianController::class, 'toggleDigunakan']);
 Route::get('/item-penilaian/digunakan', [ItemPenilaianController::class, 'getItemDigunakan']);
+Route::post('/item-penilaian/toggle/{id}', [ItemPenilaianController::class, 'toggleDigunakan']);
 
 
 // SUPERVISI
@@ -144,7 +144,7 @@ Route::middleware('auth:sanctum')->get(
 
 
 // ======= JAWABAN VALIDATOR =======
-// Route::get('/jawaban-validator/status-pengujian', [JawabanValidatorController::class, 'statusPengujian']);
+Route::get('/jawaban-validator/status-pengujian', [JawabanValidatorController::class, 'statusPengujian']);
 Route::middleware('auth:sanctum')->get(
     '/jawaban-validator/status-pengujian',
     [JawabanValidatorController::class, 'statusPengujian']
@@ -170,6 +170,13 @@ Route::get('/kode-status-pegawai/{id}', [KodeStatusPegawaiController::class, 'sh
 Route::post('/kode-status-pegawai', [KodeStatusPegawaiController::class, 'store']);
 Route::put('/kode-status-pegawai/{id}', [KodeStatusPegawaiController::class, 'update']);
 Route::delete('/kode-status-pegawai/{id}', [KodeStatusPegawaiController::class, 'destroy']);
+
+
+
+///
+// routes/api.php
+
+
 
 
 // php artisan make:controller KodeTindakLanjutHasilSupervisiController --api

@@ -15,6 +15,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+
         try {
         $request->validate([
             'nama' => 'required',
@@ -25,10 +26,7 @@ class UserController extends Controller
             'nomor_hp' => 'required',
             'alamat' => 'required',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
-            'role' => 'required|in:guru,operator,kepala_sekolah',
-            'kode_jabatan' => 'required',
-            'kode_golongan' => 'required',
-            'kode_status_pegawai' => 'required',
+            'role' => 'required|in:guru,operator,kepala_sekolah'
         ]);
 
         $data = $request->all();
