@@ -16,26 +16,36 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
+        $request->validate([
+            'nama' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+            'nip' => 'required',
+            'username' => 'required|unique:users,username',
+            'nomor_hp' => 'required',
+            'alamat' => 'required',
+            'jenis_kelamin' => 'required|in:laki-laki,perempuan',
+            'role' => 'required|in:guru,operator,kepala_sekolah',
+            'kode_jabatan' => 'required',
+            'kode_golongan' => 'required',
+            'kode_status_pegawai' => 'required',
+        ]);
 
-            $data = $request->all();
-            $data['password'] = Hash::make($data['password']);
+        $data = $request->all();
+        $data['password'] = Hash::make($data['password']);
 
-            $user = User::create($data);
+        $user = User::create($data);
 
-            return response()->json([
-                "success" => true,
-                "message" => "User berhasil ditambahkan",
-                "data" => $user,
-                201
-            ]);
+        return response()->json([
+            "success" => true,
+            "data" => $user
+        ], 201);
         } catch (\Exception $e) {
             return response()->json([
+                'error-code' => $e->getCode(),
+                'error-message' => $e->getMessage(),
                 'error' => 'Terjadi kesalahan server'
             ], 500);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json([
-                'error' => 'User tidak ditemukan'
-            ], 404);
         }
     }
 

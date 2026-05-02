@@ -87,7 +87,7 @@ public function simpanJawabanSupervisi(Request $request)
  public function getGuruByJadwalSupervisi($id_jadwal)
 {
     $data = DB::table('users')
-        ->where('role', 'guru') // 🔥 filter guru saja
+        ->whereIn('role', ['guru', 'operator'])
         ->select(
             'users.id_user as id_guru',
             'users.nama',

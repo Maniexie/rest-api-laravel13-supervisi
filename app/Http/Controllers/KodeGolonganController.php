@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KodeGolongan;
 use Illuminate\Http\Request;
 
 class KodeGolonganController extends Controller
@@ -11,7 +12,20 @@ class KodeGolonganController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            return response()->json([
+                'success' => true,
+                'data' => KodeGolongan::all()
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Terjadi kesalahan server'
+            ], 500);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Data tidak ditemukan'
+            ]);
+        }
     }
 
     /**
@@ -19,7 +33,19 @@ class KodeGolonganController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $data = $request->all();
+            $user = KodeGolongan::create($data);
+
+            return response()->json([
+                'success' => true,
+                'data' => $user
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Terjadi kesalahan server'
+            ], 500);
+        }
     }
 
     /**
@@ -27,7 +53,20 @@ class KodeGolonganController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            return response()->json([
+                'success' => true,
+                'data' => KodeGolongan::findOrFail($id)
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Terjadi kesalahan server'
+            ], 500);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Data tidak ditemukan'
+            ]);
+        }
     }
 
     /**
@@ -35,7 +74,20 @@ class KodeGolonganController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $data = $request->all();
+            $user = KodeGolongan::findOrFail($id);
+            $user->update($data);
+
+            return response()->json([
+                'success' => true,
+                'data' => $user
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Terjadi kesalahan server'
+            ], 500);
+        }
     }
 
     /**
@@ -43,6 +95,19 @@ class KodeGolonganController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $user = KodeGolongan::findOrFail($id);
+            $user->delete();
+
+            return response()->json([
+                'success' => true,
+                'data' => $user
+            ])
+            ->setStatusCode(200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Terjadi kesalahan server'
+            ], 500);
+        }
     }
 }

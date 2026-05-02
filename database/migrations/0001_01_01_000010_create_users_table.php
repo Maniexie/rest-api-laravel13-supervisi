@@ -13,19 +13,19 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id('id_user');
-            $table->string('kode_jabatan');
-            $table->string('kode_golongan');
-            $table->string('kode_status_pegawai');
-            $table->string('nip');
+            $table->string('kode_jabatan')->nullable();
+            $table->string('kode_golongan')->nullable();
+            $table->string('kode_status_pegawai')->nullable();
+            $table->string('nip')->nullable();
             $table->string('email')->unique();
             $table->string('nama');
             $table->string('username')->unique();
             $table->string('password', 64);
-            $table->string('nomor_hp');
-            $table->text('alamat');
-            $table->enum('jenis_kelamin', ['laki-laki', 'perempuan']);
-            $table->boolean('isValidator')->default(false);
-            $table->enum('role', ['kepala_sekolah', 'guru','operator']);
+            $table->string('nomor_hp')->nullable();
+            $table->text('alamat')->nullable();
+            $table->enum('jenis_kelamin', ['laki-laki', 'perempuan'])->nullable();
+            $table->boolean('isValidator')->default(false)->nullable();
+            $table->enum('role', ['kepala_sekolah', 'guru','operator'])->nullable();
             $table->rememberToken();
             $table->timestamps();
 
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->foreign('kode_jabatan')
                 ->references('kode_jabatan')
                 ->on('k_jabatan')
-                ->onDelete('cascade');
+                ->nullOnDelete();
 
             $table->foreign('kode_golongan')
                 ->references('kode_golongan')
