@@ -105,7 +105,7 @@ class JawabanValidatorController extends Controller
     //  ======= MENGUBAH DATA ITEM PENILAIAN ========
       public function cekDanHitung($versi)
 {
-    $minimalValidator = 5; // 🔥 bisa kamu ubah sesuai skripsi
+    $minimalValidator = 5; // -> minimal validator | minimal jumlah validator
 
     $jumlahValidator = DB::table('jawaban_validator')
         ->where('versi', $versi)
@@ -123,8 +123,8 @@ class JawabanValidatorController extends Controller
         ->where('versi', $versi)
         ->get();
 
-    $lo = 1;
-    $c = 7; // 🔥 sesuai skala kamu (1–7)
+    $lo = 1; // SKALA LIKERT TERENDAH
+    $c = 7; // SKALA LIKERT (1–7)
 
     foreach ($items as $item) {
 

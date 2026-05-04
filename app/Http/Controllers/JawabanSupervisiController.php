@@ -7,6 +7,17 @@ use Illuminate\Support\Facades\DB;
 
 class JawabanSupervisiController extends Controller
 {
+
+private function getKodeTindakLanjut($nilai)
+{
+    if ($nilai < 2) {
+        return 'INTENSIF';
+    } elseif ($nilai < 3.5) {
+        return 'RINGAN';
+    } else {
+        return 'BAIK';
+    }
+}
 public function simpanJawabanSupervisi(Request $request)
 {
     $request->validate([
@@ -57,32 +68,40 @@ public function simpanJawabanSupervisi(Request $request)
 
     DB::table('jawaban_supervisi')->insert($data);
 
-    // 🔥 HITUNG RATA-RATA PER KATEGORI
+    // HITUNG RATA-RATA PER KATEGORI
     $rataKategori = [];
 
     foreach ($kategoriNilai as $kategori => $val) {
         $rataKategori[$kategori] = $val['total'] / $val['count'];
     }
 
-    // 🔥 HITUNG NILAI AKHIR
+    // HITUNG NILAI AKHIR (equal weight antar kategori)
     $nilaiAkhir = array_sum($rataKategori) / count($rataKategori);
 
-    // 🔥 TINDAK LANJUT (pakai skala 1–5)
-    if ($nilaiAkhir < 2.5) {
+    // SKALA 100
+    $nilaiAkhirFinal = round($nilaiAkhir, 2);
+
+    // TINDAK LANJUT
+    if ($nilaiAkhirFinal < 60) {
         $tindakLanjut = "Pembinaan Intensif";
-    } elseif ($nilaiAkhir < 3.5) {
+    } elseif ($nilaiAkhirFinal < 80) {
         $tindakLanjut = "Pembinaan Ringan";
     } else {
         $tindakLanjut = "Dipertahankan";
     }
 
-    return response()->json([
+
+    // dd($kategoriNilai);
+    return response()->json(
+    [
         'success' => true,
         'nilai_per_kategori' => $rataKategori,
-        'nilai_akhir' => round($nilaiAkhir, 2)*20,
-        'tindak_lanjut' => $tindakLanjut
-    ]);
-}
+        'nilai' => $nilaiAkhirFinal,
+        'tindak_lanjut' => $tindakLanjut,
+        'kategori_nilai' => $kategoriNilai
+    ]
+        );
+        }
 
  public function getGuruByJadwalSupervisi($id_jadwal)
 {
