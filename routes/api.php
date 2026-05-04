@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HasilSupervisiController;
 use App\Http\Controllers\ItemPenilaianController;
 use App\Http\Controllers\JadwalSupervisiController;
 use App\Http\Controllers\JawabanSupervisiController;
@@ -170,6 +171,15 @@ Route::get('/kode-status-pegawai/{id}', [KodeStatusPegawaiController::class, 'sh
 Route::post('/kode-status-pegawai', [KodeStatusPegawaiController::class, 'store']);
 Route::put('/kode-status-pegawai/{id}', [KodeStatusPegawaiController::class, 'update']);
 Route::delete('/kode-status-pegawai/{id}', [KodeStatusPegawaiController::class, 'destroy']);
+
+// hasil supervisi
+Route::get('/hasil-supervisi', [HasilSupervisiController::class, 'index']);
+Route::get('/hasil-supervisi/{id}', [HasilSupervisiController::class, 'show']);
+// Route::post('/hasil-supervisi', [HasilSupervisiController::class, 'store']);
+// Route::put('/hasil-supervisi/{id}', [HasilSupervisiController::class, 'update']);
+// Route::delete('/hasil-supervisi/{id}', [HasilSupervisiController::class, 'destroy']);
+
+Route::get('/hasil-supervisi/jadwal/{jadwal}/guru/{guru}', [HasilSupervisiController::class, 'detailByJadwalGuru']);
 
 
 

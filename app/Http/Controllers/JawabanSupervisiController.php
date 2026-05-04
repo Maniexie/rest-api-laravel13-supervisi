@@ -116,10 +116,20 @@ public function listHasilSupervisiByGuru($id_guru)
 {
     $data = DB::table('jawaban_supervisi')
         ->join(
-            'jadwal_supervisi',
-            'jadwal_supervisi.id_jadwal_supervisi',
+            'jadwal_supervisi','jadwal_supervisi.id_jadwal_supervisi','=','jawaban_supervisi.id_jadwal_supervisi'
+        )
+        ->leftJoin(
+            'hasil_supervisi',
+            function ($join) {
+                $join->on('hasil_supervisi.id_jadwal_supervisi', '=', 'jadwal_supervisi.id_jadwal_supervisi')
+                     ->on('hasil_supervisi.id_guru', '=', 'jawaban_supervisi.id_guru');
+            }
+        )
+         ->leftJoin(
+            'k_tindak_lanjut_hasil_supervisi',
+            'k_tindak_lanjut_hasil_supervisi.kode_tindak_lanjut',
             '=',
-            'jawaban_supervisi.id_jadwal_supervisi'
+            'hasil_supervisi.kode_tindak_lanjut'
         )
         ->where('jawaban_supervisi.id_guru', $id_guru)
 
@@ -129,7 +139,14 @@ public function listHasilSupervisiByGuru($id_guru)
             'jadwal_supervisi.tanggal_mulai',
             'jadwal_supervisi.tanggal_selesai',
             'jadwal_supervisi.id_kepala_sekolah',
-            DB::raw('SUM(jawaban_supervisi.jawaban) as total_nilai')
+            DB::raw('SUM(jawaban_supervisi.jawaban) as total_nilai'),
+
+            // dari hasil_supervisi
+            'hasil_supervisi.nilai as nilai_akhir',
+            'hasil_supervisi.umpan_balik',
+            'hasil_supervisi.kode_tindak_lanjut',
+
+            'k_tindak_lanjut_hasil_supervisi.nama_tindak_lanjut'
         )
 
         ->groupBy(
@@ -137,7 +154,14 @@ public function listHasilSupervisiByGuru($id_guru)
             'jadwal_supervisi.nama_periode',
             'jadwal_supervisi.tanggal_mulai',
             'jadwal_supervisi.tanggal_selesai',
-            'jadwal_supervisi.id_kepala_sekolah'
+            'jadwal_supervisi.id_kepala_sekolah',
+
+            // WAJIB kalau pakai select non agregat
+            'hasil_supervisi.nilai',
+            'hasil_supervisi.umpan_balik',
+            'hasil_supervisi.kode_tindak_lanjut',
+
+            'k_tindak_lanjut_hasil_supervisi.nama_tindak_lanjut'
         )
 
         ->orderBy('jadwal_supervisi.tanggal_mulai', 'desc')

@@ -23,9 +23,10 @@ class DatabaseSeeder extends Seeder
 
         // User::factory(10)->create();
         $this->call([
-            KodeTindakLanjutHasilSupervisiSeeder::class,
-            MasterDataSeeder::class,
-            UserSeeder::class
+            KepalaSekolahSeeder::class,
+            // KodeTindakLanjutHasilSupervisiSeeder::class,
+            // MasterDataSeeder::class,
+            // UserSeeder::class
         ]);
 
         // User::factory(10)->create([
