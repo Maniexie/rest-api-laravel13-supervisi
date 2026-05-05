@@ -150,7 +150,14 @@ public function getItemByVersiTidakValid($versi)
                     return [
                         'versi' => (int) $versi,
                         'total_item' => $items->count(),
-                        'items' => $items->values()->toArray(),
+                        'items' => $items->map(function ($item) {
+                        return [
+                            'id_item_penilaian' => $item->id_item_penilaian,
+                            'pernyataan' => $item->pernyataan,
+                            'kode_kategori_penilaian' => $item->kode_kategori_penilaian,
+                            'nama_kategori_penilaian' => $item->kategori->nama_kategori_penilaian ?? null,
+                        ];
+                    })->values(),
                     ];
                 })
                 ->values();

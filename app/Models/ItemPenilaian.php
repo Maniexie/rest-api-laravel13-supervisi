@@ -28,4 +28,9 @@ class ItemPenilaian extends Model
     {
         return $this->belongsTo(KategoriPenilaian::class, 'kode_kategori_penilaian', 'kode_kategori_penilaian');
     }
+
+    public function kategori()
+{
+    return $this->belongsTo(KategoriPenilaian::class, 'kode_kategori_penilaian', 'kode_kategori_penilaian');
+}
 }
