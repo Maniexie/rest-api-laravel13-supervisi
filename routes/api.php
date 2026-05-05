@@ -74,14 +74,16 @@ Route::delete('/kategori-penilaian/{id}', [KategoriPenilaianController::class, '
 
 
 // Item Penilaian
+Route::get('/item-penilaian/digunakan', [ItemPenilaianController::class, 'getItemDigunakan']);
+Route::post('/item-penilaian/toggle/{id}', [ItemPenilaianController::class, 'toggleDigunakan']);
 Route::get('/item-penilaian/get-versi-item', [ItemPenilaianController::class, 'getVersiItem']);
 Route::get('/item-penilaian', [ItemPenilaianController::class, 'index']);
 Route::post('/item-penilaian', [ItemPenilaianController::class, 'store']);
 Route::put('/item-penilaian/{id}', [ItemPenilaianController::class, 'update']);
 Route::delete('/item-penilaian/{id}', [ItemPenilaianController::class, 'destroy']);
 Route::get('/item-penilaian/group-by-versi', [ItemPenilaianController::class, 'groupByVersi']);
-Route::get('/item-penilaian/digunakan', [ItemPenilaianController::class, 'getItemDigunakan']);
-Route::post('/item-penilaian/toggle/{id}', [ItemPenilaianController::class, 'toggleDigunakan']);
+
+
 
 
 // SUPERVISI

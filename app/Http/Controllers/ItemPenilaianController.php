@@ -247,8 +247,14 @@ public function getItemDigunakan()
         ->where('item_penilaian.isDigunakan', 1)
         ->get();
 
+            // 🔹 TOTAL SEMUA
+    $total = $data->count();
+
+
+
     return response()->json([
-        'data' => $data
+        'data' => $data,
+        'total' => $total,
     ]);
 }
 
@@ -285,15 +291,4 @@ public function getItemTidakValidGroupByVersi()
 }
 
 
-
-
-public function getInvalidItems() {
-    // Mengambil data yang statusnya 'tidak_valid'
-    $data = ItemPenilaian::where('status', 'tidak_valid')->get();
-
-    return response()->json([
-        'status' => 'success',
-        'data' => $data
-    ], 200);
-}
 }
