@@ -196,13 +196,37 @@ public function listHasilSupervisiByGuru($id_guru)
 public function detailHasilSupervisiGurubyJadwal($id_jadwal, $id_guru)
 {
     $data = DB::table('jawaban_supervisi')
+    ->join('item_penilaian', 'item_penilaian.id_item_penilaian', '=', 'jawaban_supervisi.id_item_penilaian')
+    ->join('k_penilaian', 'k_penilaian.kode_kategori_penilaian', '=', 'item_penilaian.kode_kategori_penilaian')
+    ->join('jadwal_supervisi', 'jadwal_supervisi.id_jadwal_supervisi', '=', 'jawaban_supervisi.id_jadwal_supervisi')
         ->where('id_jadwal_supervisi', $id_jadwal)
         ->where('id_guru', $id_guru)
         ->select(
-            'id_item_penilaian',
-            'jawaban'
+            'jawaban_supervisi.id_jadwal_supervisi',
+            'jadwal_supervisi.nama_periode',
+            'item_penilaian.pernyataan',
+            'jawaban_supervisi.id_item_penilaian',
+            'jawaban_supervisi.jawaban'
         )
-        ->get();
+        ->get()
+         ->map(function ($item) {
+
+            // 🔥 mapping nilai ke label
+            $map = [
+                1 => 'STS',
+                2 => 'TS',
+                3 => 'ATS',
+                4 => 'N',
+                5 => 'AS',
+                6 => 'S',
+                7 => 'SS',
+            ];
+
+            $item->label = $map[$item->jawaban] ?? '-';
+            $item->nilai = $item->jawaban;
+
+            return $item;
+        });
 
     return response()->json([
         'data' => $data
@@ -226,6 +250,23 @@ public function statistikSupervisiGuru($id_guru)
 
     return response()->json([
         'success' => true,
+        'data' => $data
+    ]);
+}
+
+public function getStatistikGuru($id_guru)
+{
+    $data = DB::table('jadwal_supervisi')
+        ->join('hasil_supervisi', 'hasil_supervisi.id_jadwal_supervisi', '=', 'jadwal_supervisi.id_jadwal_supervisi')
+        ->where('hasil_supervisi.id_guru', $id_guru)
+        ->select(
+            'jadwal_supervisi.nama_periode',
+            'hasil_supervisi.nilai_akhir'
+        )
+        ->orderBy('jadwal_supervisi.id_jadwal_supervisi', 'asc')
+        ->get();
+
+    return response()->json([
         'data' => $data
     ]);
 }

@@ -12,8 +12,9 @@ use App\Http\Controllers\KodeGolonganController;
 use App\Http\Controllers\KodeJabatanController;
 use App\Http\Controllers\KodeStatusPegawaiController;
 use App\Http\Controllers\KodeTindakLanjutHasilSupervisiController;
+use App\Http\Controllers\SupervisiExportController;
 use App\Http\Controllers\UserController;
-
+use App\Models\HasilSupervisi;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -114,6 +115,7 @@ Route::delete('/supervisi/delete-jadwal-supervisi/{id}',
 Route::get('/supervisi/hasil-supervisi/{id}', [JawabanSupervisiController::class, 'listHasilSupervisiByGuru']);
 Route::get('/supervisi/hasil-supervisi/{id_jadwal}/{id_guru}', [JawabanSupervisiController::class, 'detailHasilSupervisiGurubyJadwal']);
 Route::get('/supervisi/statistik-guru/{id}', [JawabanSupervisiController::class, 'statistikSupervisiGuru']);
+// Route::get('/supervisi/statistik-guru/{id}', [JawabanSupervisiController::class, 'getStatistikGuru']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/supervisi/simpan-hasil-supervisi', [JawabanSupervisiController::class, 'simpanHasilSupervisi']);
 });
@@ -177,12 +179,19 @@ Route::delete('/kode-status-pegawai/{id}', [KodeStatusPegawaiController::class, 
 // hasil supervisi
 Route::get('/hasil-supervisi', [HasilSupervisiController::class, 'index']);
 Route::get('/hasil-supervisi/{id}', [HasilSupervisiController::class, 'show']);
+Route::get(
+    '/hasil-supervisi/guru/line-chart/{id_guru}',
+    [HasilSupervisiController::class, 'lineChartHasilSupervisi']
+);
 // Route::post('/hasil-supervisi', [HasilSupervisiController::class, 'store']);
 // Route::put('/hasil-supervisi/{id}', [HasilSupervisiController::class, 'update']);
 // Route::delete('/hasil-supervisi/{id}', [HasilSupervisiController::class, 'destroy']);
 
 Route::get('/hasil-supervisi/jadwal/{jadwal}/guru/{guru}', [HasilSupervisiController::class, 'detailByJadwalGuru']);
 
+// Supervisi Export DOWNLOAD
+Route::get('/download-supervisi/{guruId}', [SupervisiExportController::class, 'download']);
+Route::get('/download-supervisi-pdf/{guruId}', [SupervisiExportController::class, 'downloadPdf']);
 
 
 ///

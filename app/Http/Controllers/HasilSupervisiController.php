@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\HasilSupervisi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HasilSupervisiController extends Controller
 {
@@ -84,6 +85,33 @@ class HasilSupervisiController extends Controller
                 'message' => 'Data tidak ditemukan'
             ]);
         }
+
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
+
+    } catch (\Throwable $th) {
+        return response()->json([
+            'success' => false,
+            'message' => $th->getMessage()
+        ], 500);
+    }
+}
+
+
+public function lineChartHasilSupervisi($idGuru)
+{
+    try {
+        $data = DB::table('hasil_supervisi')
+            ->join('jadwal_supervisi', 'jadwal_supervisi.id_jadwal_supervisi', '=', 'hasil_supervisi.id_jadwal_supervisi')
+            ->where('hasil_supervisi.id_guru', $idGuru)
+            ->select(
+                'jadwal_supervisi.nama_periode',
+                'hasil_supervisi.nilai'
+            )
+            ->orderBy('jadwal_supervisi.id_jadwal_supervisi', 'asc')
+            ->get();
 
         return response()->json([
             'success' => true,
