@@ -14,7 +14,6 @@ use App\Http\Controllers\KodeStatusPegawaiController;
 use App\Http\Controllers\KodeTindakLanjutHasilSupervisiController;
 use App\Http\Controllers\SupervisiExportController;
 use App\Http\Controllers\UserController;
-use App\Models\HasilSupervisi;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -193,6 +192,9 @@ Route::get('/hasil-supervisi/jadwal/{jadwal}/guru/{guru}', [HasilSupervisiContro
 Route::get('/download-supervisi/{guruId}', [SupervisiExportController::class, 'download']);
 Route::get('/download-supervisi-pdf/{guruId}', [SupervisiExportController::class, 'downloadPdf']);
 
+
+//ROLE GURU
+Route::get('/jadwal-supervisi-guru/{id}', [JadwalSupervisiController::class, 'jadwalGuru']);
 
 ///
 // routes/api.php

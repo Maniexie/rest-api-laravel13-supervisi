@@ -28,19 +28,15 @@ class AuthController extends Controller
 
         $token = $user->createToken('token-api')->plainTextToken;
 
-        // if (!$user->isValidator) {
-        // return response()->json([
-        // 'success' => false,
-        // 'message' => 'Anda bukan validator'
-        //     ], 403);
-        // }
+
 
        return response()->json([
         'success' => true,
         'message' => 'Login berhasil',
         'token' => $token,
         'user' => [
-            'id' => $user->id,
+            'id_user' => $user->id_user,
+            'nama' => $user->nama,
             'username' => $user->username,
             'role' => $user->role, // 🔥 penting
             'isValidator' => (bool) $user->isValidator

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\JadwalSupervisi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class JadwalSupervisiController extends Controller
 {
@@ -85,5 +86,33 @@ public function deleteJadwalSupervisi($id)
         'success' => true,
         'message' => 'Jadwal berhasil dihapus'
     ]);
+}
+
+
+public function jadwalGuru($id)
+{
+    $data = DB::table('hasil_supervisi')
+        ->join(
+            'jadwal_supervisi',
+            'hasil_supervisi.id_jadwal_supervisi',
+            '=',
+            'jadwal_supervisi.id_jadwal_supervisi'
+        )
+        ->where('hasil_supervisi.id_guru', $id)
+        ->select(
+            'hasil_supervisi.id_hasil_supervisi',
+            'hasil_supervisi.nilai',
+            'hasil_supervisi.umpan_balik',
+
+            'jadwal_supervisi.id_jadwal_supervisi',
+            'jadwal_supervisi.nama_periode',
+            'jadwal_supervisi.tanggal_mulai',
+            'jadwal_supervisi.tanggal_selesai',
+            'jadwal_supervisi.deskripsi',
+        )
+        ->orderBy('hasil_supervisi.created_at', 'asc')
+        ->get();
+
+    return response()->json($data);
 }
 }
