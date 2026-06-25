@@ -65,20 +65,34 @@
 
     <!-- 🔵 KOP SEKOLAH -->
     <div class="kop">
-        <h2>PEMERINTAH KABUPATEN XXX</h2>
+        <h2>PEMERINTAH KABUPATEN KAMPAR</h2>
         <h3>DINAS PENDIDIKAN</h3>
-        <h2>SMK NEGERI 1 CONTOH</h2>
-        <p>Alamat: Jl. Pendidikan No. 123</p>
+        <h2>UPT SD Negeri 035 Tarai Bangun</h2>
+        <p>Alamat: Jalan Suka Karya, Dusun II Tarab Mandiri, Desa Tarai Bangun, Kecamatan Tambang, Kabupaten Kampar,
+            Provinsi Riau</p>
     </div>
 
     <!-- 🔥 JUDUL -->
     <div class="judul">
-        <h3>LAPORAN HASIL SUPERVISI GURU</h3>
-        <p>ID Guru: {{ $guruId }}</p>
+        <h3>LAPORAN HASIL OBSERVASI KELAS GURU</h3>
     </div>
 
+    <table style="border:none; margin-bottom:20px;">
+        <tr>
+            <td style="border:none; width:120px;"><strong>Nama Guru</strong></td>
+            <td style="border:none; width:10px;">:</td>
+            <td style="border:none;">{{ $nama_guru }}</td>
+        </tr>
+
+        <tr>
+            <td style="border:none;"><strong>NIP</strong></td>
+            <td style="border:none;">:</td>
+            <td style="border:none;">{{ $nip_guru }}</td>
+        </tr>
+    </table>
+
     <!-- 📊 TABEL -->
-    <table>
+    <table style="margin-bottom:0px;">
         <thead>
             <tr>
                 <th>No</th>
@@ -93,25 +107,37 @@
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $row->nama_periode }}</td>
                     <td>{{ number_format($row->nilai, 2) }}</td>
-                    <td>{{ $row->kode_tindak_lanjut }}</td>
+                    <td>{{ $row->nama_tindak_lanjut }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 
+
+
     <!-- ✍️ TANDA TANGAN -->
     <table class="ttd">
         <tr>
-            <td></td>
-            <td>
-                <p>Mengetahui,</p>
-                <p>Kepala Sekolah</p>
-                <br><br><br>
-                <p><b>(___________________)</b></p>
+            <td style="width: 60%; border: none;"></td>
+            <td style="width: 40%; border: none; text-align: center;">
+                <p style="margin-bottom: -3px;">Mengetahui,</p>
+                <span>Kepala Sekolah</span>
+                <p style="margin-top: -2px;">Tarai Bangun,
+                    {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</p>
+                <div style="height: 60px;"></div>
+
+                <p>
+                    <span style="font-weight: bold;padding-bottom:2px;">
+                        Evi Yenti, S.Pd
+                    </span>
+                </p>
+
+                <p style="margin-top: -10px;  font-weight: bold; border-top:1px solid #000;display:inline-block;">
+                    NIP. 197005101993042001
+                </p>
             </td>
         </tr>
     </table>
-
 </body>
 
 </html>

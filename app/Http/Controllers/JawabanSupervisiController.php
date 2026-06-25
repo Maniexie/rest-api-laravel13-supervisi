@@ -96,6 +96,8 @@ public function simpanJawabanSupervisi(Request $request)
     [
         'success' => true,
         'nilai_per_kategori' => $rataKategori,
+        'id_guru' => $request->id_guru,
+        // 'nama_guru' => $user->nama,
         'nilai' => $nilaiAkhirFinal,
         'tindak_lanjut' => $tindakLanjut,
         'kategori_nilai' => $kategoriNilai
@@ -295,7 +297,7 @@ public function simpanHasilSupervisi(Request $request)
         'id_jadwal_supervisi' => $request->id_jadwal_supervisi,
         'id_guru' => $request->id_guru,
         'id_kepala_sekolah' => $user->id_user,
-        'nilai' => $request->nilai,
+        'nilai' => $request->nilai*20,
         'kode_tindak_lanjut' => $request->kode_tindak_lanjut,
         'created_at' => now(),
         'updated_at' => now(),
