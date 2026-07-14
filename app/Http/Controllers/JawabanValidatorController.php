@@ -104,7 +104,7 @@ class JawabanValidatorController extends Controller
     //  ======= MENGUBAH DATA ITEM PENILAIAN ========
     public function cekDanHitung($versi)
     {
-        $minimalValidator = 5; // -> minimal validator | minimal jumlah validator
+        $minimalValidator = 1; // -> minimal validator | minimal jumlah validator
 
         $jumlahValidator = DB::table('jawaban_validator')
             ->where('versi', $versi)

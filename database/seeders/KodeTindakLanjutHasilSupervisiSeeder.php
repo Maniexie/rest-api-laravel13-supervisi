@@ -17,12 +17,6 @@ class KodeTindakLanjutHasilSupervisiSeeder extends Seeder
         // Seeder k_jabatan
         DB::table('k_tindak_lanjut_hasil_supervisi')->insert([
             [
-                'kode_tindak_lanjut' => 'WS',
-                'nama_tindak_lanjut' => 'WorkShop',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
                 'kode_tindak_lanjut' => 'SM',
                 'nama_tindak_lanjut' => 'Seminar',
                 'created_at' => now(),

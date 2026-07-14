@@ -65,20 +65,17 @@ class MasterDataSeeder extends Seeder
         // Seeder k_penilaian
         DB::table('k_penilaian')->insert([
             [
-                'kode_kategori_penilaian' => 'A1',
-                'nama_kategori_penilaian' => 'Guru menguasai materi',
+                'kode_kategori_penilaian' => 'KM',
+                'nama_kategori_penilaian' => 'KEMAMPUAN MENGAJAR',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'kode_kategori_penilaian' => 'A2',
-                'nama_kategori_penilaian' => 'Guru menggunakan metode yang tepat',
+                'kode_kategori_penilaian' => 'PTP',
+                'nama_kategori_penilaian' => 'PENGGUNAAN TEKNOLOGI DALAM PEMBELAJARAN',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-        ]);
-
-        DB::table('k_penilaian')->insert([
             [
                 'kode_kategori_penilaian' => 'KDSL',
                 'nama_kategori_penilaian' => 'Kedisiplinan',
@@ -86,36 +83,32 @@ class MasterDataSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'kode_kategori_penilaian' => 'KQ',
-                'nama_kategori_penilaian' => 'Kualitas Penilaian',
+                'kode_kategori_penilaian' => 'PROF',
+                'nama_kategori_penilaian' => 'PROFESIONALISME',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'kode_kategori_penilaian' => 'MK',
+                'nama_kategori_penilaian' => 'MANAJEMEN KELAS',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'kode_kategori_penilaian' => 'KS',
+                'nama_kategori_penilaian' => 'KOMUNIKASI DENGAN SISWA',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'kode_kategori_penilaian' => 'IOT',
+                'nama_kategori_penilaian' => 'INTERAKSI DENGAN ORANG TUA',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
         ]);
 
         $this->call(ItemPenilaianSeeder::class);
-        DB::table('item_penilaian')->insert([
-            [
-                'kode_kategori_penilaian' => 'KQ',
-                'pernyataan' => 'Guru menguasai materi',
-                'versi' => 1,
-                'nilai_aiken' => 0,
-                'status' => 'tidak_valid',
-                'isDigunakan' => false,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'kode_kategori_penilaian' => 'KDSL',
-                'pernyataan' => 'Guru menggunakan metode yang tepat',
-                'versi' => 1,
-                'nilai_aiken' => 0,
-                'status' => 'tidak_valid',
-                'isDigunakan' => false,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
 
         DB::table('jadwal_supervisi')->insert([
            'id_kepala_sekolah' => 1,
@@ -129,17 +122,29 @@ class MasterDataSeeder extends Seeder
 
         DB::table('k_tindak_lanjut_hasil_supervisi')->insert([
             [
-                'kode_tindak_lanjut' => 'TL1',
-                'nama_tindak_lanjut' => 'Tindak Lanjut 1',
+                'kode_tindak_lanjut' => 'WS',
+                'nama_tindak_lanjut' => 'WORKSHOP',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'kode_tindak_lanjut' => 'TL2',
-                'nama_tindak_lanjut' => 'Tindak Lanjut 2',
+                'kode_tindak_lanjut' => 'PL',
+                'nama_tindak_lanjut' => 'PEMBINAAN LANGSUNG',
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
+            [
+                'kode_tindak_lanjut' => 'PE',
+                'nama_tindak_lanjut' => 'PELATIHAN EKSTERNAL',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'kode_tindak_lanjut' => 'PH',
+                'nama_tindak_lanjut' => 'PENGHARGAAN',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }
