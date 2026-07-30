@@ -191,6 +191,10 @@ Route::get('/hasil-supervisi/jadwal/{jadwal}/guru/{guru}', [HasilSupervisiContro
 // Supervisi Export DOWNLOAD
 Route::get('/download-supervisi/{guruId}', [SupervisiExportController::class, 'download']);
 Route::get('/download-supervisi-pdf/{guruId}', [SupervisiExportController::class, 'downloadPdf']);
+Route::get(
+'/download-periode-pdf/{guruId}/{jadwalId}',
+[SupervisiExportController::class,'downloadPerPeriodePdf']
+);
 
 
 //ROLE GURU
